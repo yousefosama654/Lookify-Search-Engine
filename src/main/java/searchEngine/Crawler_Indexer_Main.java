@@ -10,14 +10,12 @@ public class Crawler_Indexer_Main {
     public static void main(String[] args) throws IOException {
         //   start crawling first
 
-//        Crawler crawler = new Crawler(3, 100);
-//        crawler.JoinAll();
-//
-//        crawler.finish();
-//        HashMap<String, List<String>> temp = crawler.visitedURLs;
-//        Indexer.StartIndexing();
+        Crawler crawler = new Crawler(3, 100);
+        crawler.JoinAll();
 
-
+        crawler.finish();
+        HashMap<String, List<String>> temp = crawler.visitedURLs;
+        Indexer.StartIndexing();
 //       String s="";
 //       String[] g=s.split(" ");
 //       List<String> myList = new ArrayList<>(Arrays.asList(g));

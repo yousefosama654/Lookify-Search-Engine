@@ -186,7 +186,7 @@ public class Indexer {
         return JSONList;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void StartIndexing() throws IOException {
         List<String> HtmlLinks = GetSeeds();
         StringProcessing.ReadStopWords();
         HashMap<String, HashMap<String, Pair>> InvertedIndex = new HashMap<>();
