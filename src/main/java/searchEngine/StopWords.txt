@@ -437,3 +437,7 @@ z
 7
 8
 9
+cancel
+previous
+next
+submit

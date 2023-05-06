@@ -21,7 +21,7 @@ public class Indexer {
         List<String> HtmlLinks = new ArrayList<String>();
         String line;
         try {
-            FileReader reader = new FileReader("C:\\Users\\sggln\\Downloads\\Lookify\\Lookify\\Lookify-Search-Engine\\src\\main\\java\\searchEngine\\Seeds.txt");
+            FileReader reader = new FileReader("./src/main/java/searchEngine/Seeds.txt");
             BufferedReader bufferedReader = new BufferedReader(reader);
             while ((line = bufferedReader.readLine()) != null) {
                 HtmlLinks.add(line);
@@ -37,8 +37,7 @@ public class Indexer {
     public static void UploadtoDB(List<JSONObject> invertedIndexJSONParameter) {
         MongoCollection mongoCollection = MongoDB.GetCollection("InvertedIndex");
         MongoDB.RemoveCollection("InvertedIndex");
-        for (int i = 0; i < invertedIndexJSONParameter.size(); i++)
-        {
+        for (int i = 0; i < invertedIndexJSONParameter.size(); i++) {
             org.bson.Document doc = new org.bson.Document(invertedIndexJSONParameter.get(i));
             mongoCollection.insertOne(doc);
         }
@@ -68,7 +67,15 @@ public class Indexer {
         }
     }
 
-    public static String GetText(String Link, HashMap<String, Integer> WordsPrioity) {
+    public static boolean HandleElements(Element element) {
+        String[] array = {"a", "br", "script", "i", "iframe", "img", "input", "button", "link", "style"};
+        for (String str : array) {
+            if (element.tagName().equals(str)) return false;
+        }
+        return true;
+    }
+
+    public static String GetText(String Link, HashMap<String, Integer> WordsPrioity, HashMap<String, List<String>> WordParagraphs) {
         String text = "";
         try {
             // Create a Jsoup Document object by connecting to the URL
@@ -80,7 +87,7 @@ public class Indexer {
             // Loop over each element in the Elements collection
             for (Element element : elements) {
                 // Check if the element has any child elements
-                if (element.children().isEmpty()) {
+                if (element.children().isEmpty() && HandleElements(element)) {
                     // If the element does not have any child elements, it is a leaf node in the document tree
                     elementsWithoutChildren.add(element);
                 }
@@ -103,6 +110,13 @@ public class Indexer {
                         WordsPrioity.put(word, Math.max(priority, WordsPrioity.get(word)));
                     } else
                         WordsPrioity.put(word, priority);
+//                    HashMap<String, List<String>>
+                    if (!WordParagraphs.containsKey(word)) {
+                        List<String> paragraphs = new ArrayList<String>(); // Declare a new list
+                        WordParagraphs.put(word, paragraphs);
+                    }
+                    List<String> paragraphs = WordParagraphs.get(word);
+                    paragraphs.add(ElementText);
                     sb.append(word);
                     sb.append(" ");
                 }
@@ -123,19 +137,16 @@ public class Indexer {
      * TF occurrences of this word in the document
      * Size is the Size of stemmed words in this document
      */
-    public static void BuildInvertedIndex(List<String> Words, String DocumentName, HashMap<String, HashMap<String, Pair>> InvertedIndex, HashMap<String, Integer> WordsPrioity) {
+    public static void BuildInvertedIndex(List<String> Words, String DocumentName, HashMap<String, HashMap<String, Pair>> InvertedIndex, HashMap<String, Integer> WordsPrioity, HashMap<String, List<String>> WordParagraphs) {
         for (int i = 0; i < Words.size(); i++) {
             String Word = Words.get(i);
             if (!InvertedIndex.containsKey(Word)) {
                 HashMap<String, Pair> DocsMappedtoWord = new HashMap<String, Pair>();
                 InvertedIndex.put(Word, DocsMappedtoWord);
             }
-
-
             HashMap<String, Pair> DocsMappedtoWord = InvertedIndex.get(Word);
-            if (!DocsMappedtoWord.containsKey(DocumentName))
-            {
-                Pair DocumentPair = new Pair(0, Words.size(), WordsPrioity.get(Word));
+            if (!DocsMappedtoWord.containsKey(DocumentName)) {
+                Pair DocumentPair = new Pair(0, Words.size(), WordsPrioity.get(Word), WordParagraphs.get(Word));
                 DocsMappedtoWord.put(DocumentName, DocumentPair);
             }
             Pair DocumentPair = DocsMappedtoWord.get(DocumentName);
@@ -159,6 +170,14 @@ public class Indexer {
                 DocumentJSON.put("TF", InvertedIndex.get(Word).get(Doc).TF);
                 DocumentJSON.put("Size", InvertedIndex.get(Word).get(Doc).Size);
                 DocumentJSON.put("Priority", InvertedIndex.get(Word).get(Doc).Priority);
+                List<JSONObject> Paragraphs = new ArrayList<JSONObject>();
+                for (int i = 0; i < InvertedIndex.get(Word).get(Doc).Paragraphs.size(); i++) {
+                    JSONObject paragraphJSON = new JSONObject();
+                    paragraphJSON.put("link" + (i + 1), InvertedIndex.get(Word).get(Doc).Paragraphs.get(i));
+                    Paragraphs.add(paragraphJSON);
+                }
+                DocumentJSON.put("Paragraphs", Paragraphs);
+                // add another for loop to add sentences
                 documents.add(DocumentJSON);
             }
             WordJSON.put("Documents", documents);
@@ -167,16 +186,17 @@ public class Indexer {
         return JSONList;
     }
 
-    public static void StartIndexing() throws IOException {
+    public static void main(String[] args) throws IOException {
         List<String> HtmlLinks = GetSeeds();
         StringProcessing.ReadStopWords();
         HashMap<String, HashMap<String, Pair>> InvertedIndex = new HashMap<>();
-        HashMap<String, Integer> WordsPrioity = new HashMap<>();
-        for (String Link : HtmlLinks)
-        {
-            String Text = GetText(Link, WordsPrioity);
+        // bug fix inside the loop
+        for (String Link : HtmlLinks) {
+            HashMap<String, Integer> WordsPrioity = new HashMap<>();
+            HashMap<String, List<String>> WordParagraphs = new HashMap<>();
+            String Text = GetText(Link, WordsPrioity, WordParagraphs);
             List<String> Words = StringProcessing.splitWords(Text);
-            BuildInvertedIndex(Words, Link, InvertedIndex, WordsPrioity);
+            BuildInvertedIndex(Words, Link, InvertedIndex, WordsPrioity, WordParagraphs);
         }
         List<JSONObject> JSONList = convertInvertedIndexToJSON(InvertedIndex, HtmlLinks.size());
         UploadtoDB(JSONList);

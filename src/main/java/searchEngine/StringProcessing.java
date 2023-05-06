@@ -41,7 +41,7 @@ public class StringProcessing {
     }
 
     protected static void ReadStopWords() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\sggln\\Downloads\\Lookify\\Lookify\\Lookify-Search-Engine\\src\\main\\java\\searchEngine\\StopWords.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("./src/main/java/searchEngine/StopWords.txt"));
         StopWords = new ArrayList<String>();
         String word;
         while ((word = reader.readLine()) != null) {
