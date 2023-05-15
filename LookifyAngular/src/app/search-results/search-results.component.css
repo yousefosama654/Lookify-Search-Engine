@@ -1,0 +1,171 @@
+.website-title {
+    color: #681da8;
+    font-size: large;
+    font-weight: bold;
+
+}
+
+.website-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+
+.website-link {
+    color: #008000;
+    font-size: 12px;
+}
+
+.website-link:hover {
+    cursor: pointer;
+}
+
+.website-description {
+    color: #4D5156;
+    font-size: 16px;
+}
+
+.icon {
+    font-size: 22px;
+    width: 2rem;
+    min-width: 2rem;
+    margin: 0 0.5rem;
+    text-align: center;
+}
+
+.content {
+    margin-left: 2.5rem;
+    padding-top:12px ;
+}
+
+.google-logo {
+    top: 0;
+    left: 0;
+    width: 170px;
+}
+.search-bar {
+    border: 1px solid #e3e3e3;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    width: 900px;
+}
+
+.icon {
+    position: relative;
+    left: 15px;
+    top: 15px;
+    color: #9aa0a6;
+    font-size: 20px;
+}
+
+.input {
+    background-color: transparent;
+    border: none;
+    margin-top: 8px;
+    margin-left: 25px;
+    padding: 0;
+    color: rgba(0, 0, 0, .87);
+    word-wrap: break-word;
+    outline: none;
+    display: flex;
+    flex: 100%;
+    height: 34px;
+    font-size: 16px;
+    width: 80%;
+}
+
+.icon2 {
+    position: relative;
+    left: 50rem;
+    top: 15px;
+    color: #3F75D3;
+    font-size: 20px;
+}
+
+.icon2:hover {
+    cursor: pointer;
+}
+.suggest-div-outer {
+    border: 1px solid #e3e3e3;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    width: 900px;
+}
+
+.suggest-div-outer:hover {
+    background-color: #C0CFE8;
+}
+
+.active {
+    background-color: #C0CFE8;
+}
+
+.suggest-div-inner {
+    background-color: transparent;
+    border: none;
+    margin-top: 15px;
+    margin-left: 60px;
+    padding: 0;
+    color: rgba(0, 0, 0, .87);
+    word-wrap: break-word;
+    outline: none;
+    display: flex;
+    flex: 100%;
+    height: 34px;
+    font-size: 16px;
+    width: 80%;
+}
+
+.voiceModal {
+    position: absolute;
+    z-index: 1111;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.voiceModal .voice-search {
+    height: 300px;
+}
+
+.voiceModal .micIcon {
+    position: relative;
+    height: 80px;
+    width: 80px;
+    font-size: 2.5rem;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.voiceModal .micIcon::before {
+    position: absolute;
+    content: '';
+    height: 80px;
+    width: 80px;
+    background: rgba(0, 0, 0, 0.5);
+    animation: animateIcon 1s forwards infinite;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+@keyframes animateIcon {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1.5);
+    }
+}
+
+.x-icon {
+    margin-top: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}

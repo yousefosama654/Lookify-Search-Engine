@@ -1,0 +1,10 @@
+<div class="EventImage__fileType m-auto">
+    <div class='EventImagefileType-body'>
+        <i class="fal fa-camera photo"></i>
+        <h3 class="h5-style">Drag and drop an Image</h3>
+        <button (click)="submitForm()" class='upload__btn'>
+            <i class="fal fa-camera mx-2"></i>
+            {{btnWord}}</button>
+        <input (change)="onFileSelected($event)" #myInput class="d-none" type="file" />
+    </div>
+</div>
