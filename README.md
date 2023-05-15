@@ -31,6 +31,10 @@ Run Crawler_Indexer_Main to start Crawler ,Indexer and Popularity.
 **_Running Front-end_**
 
 ```sh
+$ Open Folder LookifyAngular.
+```
+
+```sh
 $ npm install.
 ```
 
