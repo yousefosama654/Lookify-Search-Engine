@@ -2,7 +2,44 @@
 
 <div align='center'><img src="Screenshots/logo.png"></div>
 
- <h2 align='center' <a name = "Contributors"> ⭐ Contributors ⭐ </h2>
+
+
+### Prerequisite <a name = "req"></a>
+
+1. Angular CLI
+2. MongoDB
+3. Any Java IDE (Intellij in our case)
+
+
+
+
+### Installation <a name = "Install"></a>
+
+1. **_Clone the repository_**
+
+```sh
+$ git clone https://github.com/yousefosama654/Lookify-Search-Engine.git
+```
+
+
+**_Running Program_**
+
+```sh
+Run Crawler_Indexer_Main to start Crawler ,Indexer and Popularity.
+```
+
+**_Running Front-end_**
+
+```sh
+npm install.
+```
+
+```sh
+ng s -o.
+```
+
+
+<h2 align='center' <a name = "Contributors"> ⭐ Contributors ⭐ </h2>
 <!-- readme: collaborators -start -->
 <table  align='center'> 
 <tr>
