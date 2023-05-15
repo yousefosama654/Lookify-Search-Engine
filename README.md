@@ -28,6 +28,12 @@ $ git clone https://github.com/yousefosama654/Lookify-Search-Engine.git
 Run Crawler_Indexer_Main to start Crawler ,Indexer and Popularity.
 ```
 
+**_Running Server_**
+```sh
+$ Open Folder Lookify and run it as a Project not file.
+```
+
+
 **_Running Front-end_**
 
 ```sh
