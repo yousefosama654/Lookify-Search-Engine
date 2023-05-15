@@ -31,11 +31,11 @@ Run Crawler_Indexer_Main to start Crawler ,Indexer and Popularity.
 **_Running Front-end_**
 
 ```sh
-npm install.
+$ npm install.
 ```
 
 ```sh
-ng s -o.
+$ ng s -o.
 ```
 
 
