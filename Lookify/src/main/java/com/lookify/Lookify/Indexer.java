@@ -3,12 +3,17 @@ package com.lookify.Lookify;
 import java.io.*;
 import java.util.*;
 
+import com.mongodb.MongoNamespace;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.json.simple.JSONObject;
-
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
 public class Indexer {
     public static List<String> GetSeeds() {
         List<String> HtmlLinks = new ArrayList<String>();
@@ -27,12 +32,17 @@ public class Indexer {
     }
 
     public static void UploadInvertedIndexToDB(List<JSONObject> invertedIndexJSONParameter) {
-        MongoCollection mongoCollection = MongoDB.GetCollection("InvertedIndex");
-        MongoDB.RemoveCollection("InvertedIndex");
+        MongoCollection mongoCollection = MongoDB.GetCollection("temp");
+
         for (int i = 0; i < invertedIndexJSONParameter.size(); i++) {
             org.bson.Document doc = new org.bson.Document(invertedIndexJSONParameter.get(i));
             mongoCollection.insertOne(doc);
         }
+        MongoDB.RemoveCollection("InvertedIndex");
+        MongoClient mongoClient = MongoClients.create(MongoDB.getConnectionString());
+        MongoDatabase mongodb = mongoClient.getDatabase("Lookify");
+        MongoNamespace newNamespace = new MongoNamespace(mongodb.getName(), "InvertedIndex");
+        mongoCollection.renameCollection(newNamespace);
     }
 
     public static void UploadTitlesToDB(List<JSONObject> Titles) {

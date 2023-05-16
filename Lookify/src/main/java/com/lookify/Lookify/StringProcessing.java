@@ -37,7 +37,7 @@ public class StringProcessing {
     }
 
     protected static void ReadStopWords() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("StopWords.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\sggln\\OneDrive\\Desktop\\Lookify-Search-Engine\\Lookify\\StopWords.txt"));
         StopWords = new ArrayList<String>();
         String word;
         while ((word = reader.readLine()) != null) {

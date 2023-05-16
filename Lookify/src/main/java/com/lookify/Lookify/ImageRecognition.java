@@ -26,7 +26,7 @@ public class ImageRecognition {
             // Perform forward pass on the model to get the predictions
             INDArray[] outputs = vgg16.output(false, image);
             // Get the labels for the predictions
-            String jsonString = new Scanner(new File("labels.txt")).useDelimiter("\\Z").next();
+            String jsonString = new Scanner(new File("C:\\Users\\sggln\\OneDrive\\Desktop\\Lookify-Search-Engine\\Lookify\\labels.txt")).useDelimiter("\\Z").next();
             Gson gson = new Gson();
             List<String> words = new ArrayList<>();
             // Parse the JSON string and extract the words

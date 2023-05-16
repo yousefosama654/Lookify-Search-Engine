@@ -25,6 +25,7 @@ export class MediaComponent implements OnInit {
       this.btnWord = "Loading...";
       const response = await this._GetresultsService.getImageSearchResults(selectedFile.name).toPromise();
       searchval = response.text;
+      console.log(searchval);
       this._router.navigate(['/search', searchval]);
       this._GetresultsService.addToHistory(searchval).subscribe(() => { });
     } catch (error) {

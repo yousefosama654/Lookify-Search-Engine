@@ -20,7 +20,7 @@ public class MongoDB {
     public static String getConnectionString() {
         String line = "";
         try {
-            FileReader reader = new FileReader("ConnectionString.txt");
+            FileReader reader = new FileReader("C:\\Users\\sggln\\OneDrive\\Desktop\\Lookify-Search-Engine\\Lookify\\ConnectionString.txt");
             BufferedReader bufferedReader = new BufferedReader(reader);
             line = bufferedReader.readLine();
             reader.close();

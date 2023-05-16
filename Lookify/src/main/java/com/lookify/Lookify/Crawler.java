@@ -475,8 +475,8 @@ public class Crawler implements Runnable {
                         else if (rule.equals("/"))
                             return false;
                         // disallow **
-                        if (rule.startsWith("") || rule.endsWith("")) {
-                            if (rule.startsWith("") && rule.endsWith("")) {
+                        if (rule.startsWith("*") || rule.endsWith("*")) {
+                            if (rule.startsWith("*") && rule.endsWith("*")) {
                                 int start1 = rule.indexOf("*") + 1;
                                 int end1 = rule.length() - 2;
                                 String r = rule.substring(start1, end1);
@@ -484,7 +484,7 @@ public class Crawler implements Runnable {
                                     return false;
                             } else if (rule.startsWith("*")) {
                                 int start1 = rule.indexOf("*") + 1;
-                                int end1 = rule.length();
+                                int end1 = rule.length()-1;
                                 String r = rule.substring(start1, end1);
                                 if (actualURL.endsWith(r))
                                     return false;
