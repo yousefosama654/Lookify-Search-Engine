@@ -131,14 +131,39 @@ public class QueryProcessor {
         PhraseSearchingLinks = new HashMap<>();
         words_documents = new HashSet<>();
         words = new HashSet<>();
-        if (CheckIfNotOnlyPhrase(Query) == true && CheckCobinations(Query) == false) {
+        if (CheckIfNotOnlyPhrase(Query) == true && CheckCobinations(Query) == false)
+        {
             ArrayList<String> Queries = new ArrayList<String>(Arrays.asList(Query.split("\"")));
+            PhraseSearching = true;
             for (int i = 0; i < Queries.size(); i++) {
                 String temp = "\"" + Queries.get(i) + "\"";
-                if (Query.contains(temp)) {
+                if (Query.contains(temp))
+                {
                     QuereyLinks(temp);
-                } else {
+                    words.addAll(QueryWords);
+                } else
+                {
                     QuereyLinks(Queries.get(i));
+
+                    Iterator<Document> itt = words_documents.iterator();
+                    while (itt.hasNext())
+                    {
+                        ArrayList<Document> docList = (ArrayList<Document>) itt.next().get("Documents");
+                        for (Document doc : docList)
+                        {
+                            String link = doc.getString("Document");
+                            ArrayList<Document> paragraph = (ArrayList<Document>) doc.get("Paragraphs");
+                            outerloop:
+                            for (Document parag1 : paragraph)
+                            {
+                                String parag = parag1.getString("link");
+                                intPair p=new intPair(parag,doc.getInteger("Priority"));
+                                PhraseSearchingLinks.put(link,p);
+                            }
+                        }
+                    }
+                    words.addAll(QueryWords);
+
                 }
             }
         } else if (CheckCobinations(Query) == true) {
@@ -160,7 +185,6 @@ public class QueryProcessor {
                         andFlag = true;
                         QuereyLinks(entry.getKey());
                         words_documents.retainAll(temp);
-//                        PhraseSearchingLinks.retainAll(temp2);
                         HashMap<String, intPair> commonElements = new HashMap<>();
                         for (Map.Entry<String, intPair> element : temp2.entrySet()) {
                             String link = element.getKey();
@@ -198,6 +222,10 @@ public class QueryProcessor {
                 }
                 i++;
             }
-        } else QuereyLinks(Query);
+        } else
+        {
+            QuereyLinks(Query);
+            words.addAll(QueryWords);
+        }
     }
 }

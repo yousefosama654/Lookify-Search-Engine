@@ -1,5 +1,5 @@
 import { SearchResult } from './../search-results';
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GetresultsService } from '../getresults.service';
 import { observable } from 'rxjs';
@@ -11,6 +11,8 @@ declare var webkitSpeechRecognition: any;
 })
 // <reference types="webkit"/>
 export class SearchResultsComponent implements OnInit {
+
+  @ViewChild('audioPlayer') audioPlayer: any;
   searchSuggestions: Array<string> = ["electro physics", "quantum physics", "statistical physics", "micro physics"];
   searchSuggestionsMatching: Array<string> = new Array<string>();
   QueryString: string = "";
@@ -27,6 +29,7 @@ export class SearchResultsComponent implements OnInit {
   takentime: number = 0;
   recognition = new webkitSpeechRecognition();
   constructor(private _route: ActivatedRoute, private _GetresultsService: GetresultsService, private router: Router) {
+    this.audioPlayer = this.audioPlayer?.nativeElement;
     this.recognition.continuous = true;
     this.recognition.interimResults = true;
     // This event is triggered when the recognition engine returns a result.
@@ -72,13 +75,29 @@ export class SearchResultsComponent implements OnInit {
   onEnter(event: any) {
     if (this.CurrentQueryString == '') {
       alert("Please enter a valid search query");
+
+
+
     }
+
+
     else {
+      if (this.CurrentQueryString == 'cattle' || this.CurrentQueryString == 'cow') {
+        this.playSound();
+      }
       this.QueryString = this.CurrentQueryString;
       this.router.navigate(['/search', this.QueryString]);
       this._GetresultsService.addToHistory(this.QueryString).subscribe(() => { });
       this.getresults();
+
+
     }
+  }
+
+  playSound() {
+    const audio: HTMLAudioElement = this.audioPlayer.nativeElement;
+    audio.load();
+    audio.play();
   }
   startRecognition() {
     // Start the recognition engine.
@@ -136,6 +155,7 @@ export class SearchResultsComponent implements OnInit {
       this.searchSuggestionsMatching = [];
     }
     else {
+
       this.searchSuggestionsMatching = [];
       this.searchSuggestionsMatching.push(this.QueryString);
       this.searchSuggestions.forEach((item) => {
